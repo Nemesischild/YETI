@@ -37,6 +37,7 @@ public class ExampleOnboarding {
                     "Then I see well commented javadocs by Connor",
             priority = TestInformation.TestPriority.HIGH,
             type = TestInformation.TestType.AUTOMATIC
+        
     )
 
     /**
