@@ -5,12 +5,14 @@ import COM.ExampleProject.Web.Suites.GoogleResponsivenessPOC;
 import com.runner.annotations.Setup;
 import com.runner.interfaces.EnhancedTestInterface;
 import com.runner.runner.EnhancedSuite;
+import com.automation.RunnerUtils;
 import org.junit.runner.RunWith;
+import org.junit.runner.Runner;
 import org.junit.runners.Suite;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LoggingPreferences;
-
+import java.util.Locale;
 import java.net.MalformedURLException;
 
 
@@ -53,9 +55,11 @@ public class ExampleProjectWebRunner implements EnhancedTestInterface {
      * When the above requirements are met we can now declare our class. Keeping in mind it HAS to
      * implement the EnchancedTestInterface or our runner won't be able to bind to anything.
      */
+    private static String OS = System.getProperty("os.name", "unknown").toLowerCase(Locale.ROOT);
 
 
-    public static String rootLocation = "src/main/resources/chromedriver";
+    public static String rootLocation = "src/main/resources/chromedriver.exe";
+    //public static String rootLocation = "src/main/resources/chromedriver";
     public static ChromeDriver driver;
 
     /**

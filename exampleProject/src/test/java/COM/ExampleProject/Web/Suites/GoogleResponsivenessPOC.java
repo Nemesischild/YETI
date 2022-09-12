@@ -138,11 +138,11 @@ public class GoogleResponsivenessPOC {
 
     @Test
     public void RSP_ACC_001() throws Throwable {
-String sRootURL = "https://test1.racingpost.com/";
+String sRootURL = "https://www.racingpost.com";
 
         EnhancedAssertion.hardAssertCondition(
                 WebNavUtils.validateSiteLoadWithinMaxLimit(ExampleProjectWebRunner.driver, sRootURL, 10),
-                "URL: \"https://test1.racingpost.com/\" - Expected load time less than 10s");
+                "URL:" +sRootURL+ "- Expected load time less than 10s");
 
         ExampleProjectNav.AcessibilityAuditAllLinksOnCurrentPage(ExampleProjectWebRunner.driver, sRootURL);
 

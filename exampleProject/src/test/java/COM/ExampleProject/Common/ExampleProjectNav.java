@@ -106,22 +106,19 @@ public class ExampleProjectNav {
                     break;
                 }
             }
-
-            // Check Ignore flag
+                     // Check Ignore flag
             if (!ignoreLink) {
 
                 // try to click the current link
                 try {
                     //ignore mailto Links
-                    if (sURL.contains("test1.racingpost.com")) {
+                    if (sURL.contains("racingpost.com") && !sURL.contains("mailto:") && !sURL.contains("tel:")) {
                         EnhancedLogging.debug("Element index: "+ i +" - Attempting to open: " + sURL);
-                       try {
-                            //   WebNavUtils.findAndClickLink(driver, sURL);
+
+
                             ExampleProjectWebRunner.driver.navigate().to(sURL);
 
-                        } catch (Exception e) {
-                            EnhancedLogging.debug(e.getMessage());
-                        }
+
                         //elements.get(i).click();
                         // Add link URL to clicked list
                         clickedLinks.add(sURL);
@@ -156,12 +153,12 @@ public class ExampleProjectNav {
 
 
                     } else {
-                        System.out.println("Element index: "+ i +" - IGNORING: " + sURL + " non http link");
+                        System.out.println("Element index: "+ i +" - IGNORING: " + sURL + " not in scope");
                     }
                 } catch (Exception e) {
                     //ignore hidden element exceptions
                     if (!e.getMessage().contains("element not visible")) {
-                        System.out.println("Element index: "+ i +" - Did not click Element:  " + sURL + "\n Recieved :" + e.getMessage() + "\n");
+                        System.out.println("Element index: "+ i +" - Did not open URL:  " + sURL + "\n Recieved :" + e.getMessage() + "\n");
                     } else {
                         // report the error
                         System.out.println("Element index: " + i + " " + sURL + " - is not a visible element that can be clicked");
