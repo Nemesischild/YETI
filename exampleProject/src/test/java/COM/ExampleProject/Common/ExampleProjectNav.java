@@ -113,14 +113,13 @@ public class ExampleProjectNav {
                 // try to click the current link
                 try {
                     //ignore mailto Links
-                    if (sURL.contains("http") && sURL.contains("mubaloodev")) {
-                        EnhancedLogging.debug("Attempting to Click: " + sURL);
-                        //Click the link
-                        try{
-                         //   WebNavUtils.findAndClickLink(driver, sURL);
-                        ExampleProjectWebRunner.driver.navigate().to(sURL);
+                    if (sURL.contains("test1.racingpost.com")) {
+                        EnhancedLogging.debug("Element index: "+ i +" - Attempting to open: " + sURL);
+                       try {
+                            //   WebNavUtils.findAndClickLink(driver, sURL);
+                            ExampleProjectWebRunner.driver.navigate().to(sURL);
 
-                        }catch(Exception e){
+                        } catch (Exception e) {
                             EnhancedLogging.debug(e.getMessage());
                         }
                         //elements.get(i).click();
@@ -134,52 +133,52 @@ public class ExampleProjectNav {
                         List<Result> warnings = new ArrayList<Result>();
                         errors = ((List<Result>) accessibilityReport.get("error"));
                         warnings = ((List<Result>) accessibilityReport.get("warning"));
-                        String elementList ="";
+                        String elementList = "";
 
                         for (Result error : errors) {
                             for (String element : error.getElements()) { //violated elements
-                                elementList = elementList + "<li style=\"text-align: left\" >"+element+"</li>\n";
+                                elementList = elementList + "<li style=\"text-align: left\" >" + element + "</li>\n";
                             }
-                            EnhancedAssertion.softAssertCondition(false, sURL + "\nERROR: Rule:" + error.getRule() + "\nURL: " + error.getUrl() + "\n ELEMENT <font color='black'> <ol type=\"1\">"+ elementList +"</ol></font>");//e.g. AX_TEXT_01
+                            EnhancedAssertion.softAssertCondition(false, "<p><strong>"+sURL + "</strong></p>"+ "\nERROR: Rule:" + error.getRule() + "\nURL: " + error.getUrl() + "\n ELEMENT <font color='black'> <ol type=\"1\">" + elementList + "</ol></font>");//e.g. AX_TEXT_01
+                            elementList = "";
+
+                        }
+                        for (Result warning : warnings) {
+
+                            for (String element : warning.getElements()) { //violated elements
+                                elementList = elementList + "<li style=\"text-align: left\" type=\"I\">"+element+"</li>\n";
+
+                            }
+                            EnhancedAssertion.softAssertCondition(false, "<p><strong>"+sURL + "</strong></p>" + "\nWARNING: Rule:" + warning.getRule() + "\nURL: " + warning.getUrl() + "\n ELEMENT <font color='black'> <ol type=\"1\">"+ elementList +"</ol></font>");//e.g. AX_TEXT_01
                             elementList ="";
-
-                            for (Result warning : warnings) {
-
-                                for (String element : warning.getElements()) { //violated elements
-                                    elementList = elementList + "<li style=\"text-align: left\" type=\"I\">"+element+"</li>\n";
-
-                                }
-                                EnhancedAssertion.softAssertCondition(false, sURL + "\nWARNING: Rule:" + warning.getRule() + "\nURL: " + warning.getUrl() + "\n ELEMENT <font color='black'> <ol type=\"1\">"+ elementList +"</ol></font>");//e.g. AX_TEXT_01
-                                elementList ="";
-
-                            }
 
                         }
 
 
                     } else {
-                        System.out.println("IGNORING: " + sURL + " non http link");
+                        System.out.println("Element index: "+ i +" - IGNORING: " + sURL + " non http link");
                     }
                 } catch (Exception e) {
                     //ignore hidden element exceptions
                     if (!e.getMessage().contains("element not visible")) {
-                        System.out.println("Did not click Element:  " + sURL + "\n Recieved :" + e.getMessage() + "\n");
+                        System.out.println("Element index: "+ i +" - Did not click Element:  " + sURL + "\n Recieved :" + e.getMessage() + "\n");
                     } else {
                         // report the error
-                        System.out.println(sURL + "is not a visible element that can be clicked");
+                        System.out.println("Element index: " + i + " " + sURL + " - is not a visible element that can be clicked");
                     }
                 }
                 // Check window Tab titles
                 ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
                 // Report "Page not found" Error  discovered
-                if (driver.switchTo().window(tabs.get(0)).getTitle().equals("Page Not Found")) {
-                    System.out.println("\n ERROR: " + sURL + "returned 'Page Not Found'");
+                if (driver.switchTo().window(tabs.get(0)).getTitle().contains("Page Not Found")) {
+                    System.out.println("\n ERROR: " + sURL + "returned '404 Page Not Found'");
+                    EnhancedAssertion.softAssertCondition(false, "\n ERROR: " + sURL + "returned '404 Page Not Found'");
                 }
 
                 // Navigate back to the previous page
                 driver.navigate().to(sRootURL);
 
-               WebNavUtils.closeAllButRootBrowserTabs(driver);
+                WebNavUtils.closeAllButRootBrowserTabs(driver);
             }
             Thread.sleep(1000);
             // Clear the list

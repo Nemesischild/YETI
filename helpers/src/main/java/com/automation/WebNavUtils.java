@@ -940,8 +940,10 @@ public class WebNavUtils {
 
         //write timer result to log file
         EnhancedLogging.testlog("Loading: <a href " + sURL + "/a> " + sURL + " : " + totalTime + " seconds");
+        EnhancedLogging.debug("Loading: <a href " + sURL + "/a> " + sURL + " : " + totalTime + " seconds");
 
         // return minor error when unrealistic limite sent
+
         if (lMaxLimitSeconds <= 0) {
             EnhancedLogging.testlog("Unable to validate URL (\"<a href" + sURL + "/a>" + sURL + ") is able to load within the maximum limit (" + lMaxLimitSeconds + " seconds) as it cannot be 0 or less\n Actual load took :" + totalTime + " seconds");
             return true;

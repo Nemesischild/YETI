@@ -21,10 +21,8 @@ import java.net.MalformedURLException;
  */
 
 @Suite.SuiteClasses({
-        //ExampleSiteLaunch.class,
        GoogleResponsivenessPOC.class,
-        //SEOExample.class
-})
+ })
 
 /**
  * Here we declare what classes the EnhancedSuite Runner will look for to run - This can be more than one just
@@ -32,7 +30,7 @@ import java.net.MalformedURLException;
  */
 
 @Setup(
-        application = "ExampleProject (Web)",
+        application = "RP Accessibility audit POC",
         reportType = {
                 Setup.ReportType.EXCEL,
                 Setup.ReportType.EXTENT_REPORT

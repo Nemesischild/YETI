@@ -1,6 +1,7 @@
 package COM.ExampleProject.Web;
 
-import COM.ExampleProject.Web.Suites.ExampleSiteLaunchTest;
+//import COM.ExampleProject.Web.Suites.ExampleSiteLaunchTest;
+import COM.ExampleProject.Web.Suites.GoogleResponsivenessPOC;
 import com.runner.annotations.Setup;
 import com.runner.runner.EnhancedSuite;
 import org.junit.runner.RunWith;
@@ -13,10 +14,10 @@ import java.net.MalformedURLException;
 
 @RunWith(EnhancedSuite.class)
 @Suite.SuiteClasses({
-        ExampleSiteLaunchTest.class,
+        GoogleResponsivenessPOC.class,
 })
 @Setup(
-        application = "ExampleProject (Web)",
+        application = "RP web Accessibility POC Audit",
         reportType = {
                 Setup.ReportType.EXCEL,
                 Setup.ReportType.EXTENT_REPORT

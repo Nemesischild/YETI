@@ -36,7 +36,8 @@ public class ExampleOnboarding {
                     "When I look at a class for information\n" +
                     "Then I see well commented javadocs by Connor",
             priority = TestInformation.TestPriority.HIGH,
-            type = TestInformation.TestType.AUTOMATIC
+            type = TestInformation.TestType.AUTOMATIC,
+            testRunOrder = 1
         
     )
 
@@ -46,6 +47,8 @@ public class ExampleOnboarding {
      * declaration prior to the start of an @Test annotated Test method.
      */
 
+   
+    
 
     @Test
     public void logInWithOnBoarding() {
