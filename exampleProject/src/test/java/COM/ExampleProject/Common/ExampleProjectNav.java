@@ -118,8 +118,6 @@ public class ExampleProjectNav {
 
                             ExampleProjectWebRunner.driver.navigate().to(sURL);
 
-
-                        //elements.get(i).click();
                         // Add link URL to clicked list
                         clickedLinks.add(sURL);
 
