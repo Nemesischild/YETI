@@ -89,7 +89,7 @@ public class ExampleProjectNav {
         String sURL = "";
         boolean ignoreLink = false;
 
-        // Find all a href links on the current page into a useable list
+        // Find all a href links on the current page into a usable list
         elements = driver.findElements(By.tagName("a"));
         int sizeOfAllLinks = elements.size();
 
