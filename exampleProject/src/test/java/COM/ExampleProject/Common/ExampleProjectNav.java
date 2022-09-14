@@ -183,6 +183,11 @@ public class ExampleProjectNav {
             // grab all the links again (so the index count remains the same)
             elements = driver.findElements(By.tagName("a"));
             //System.out.println(sizeOfAllLinks);
+            int newElementSize = elements.size();
+            if (newElementSize != sizeOfAllLinks){
+                EnhancedLogging.logOutput("Old element list count = " + sizeOfAllLinks + ": New element Count  = " + newElementSize );
+                sizeOfAllLinks = newElementSize;
+            }
 
         }
     }
