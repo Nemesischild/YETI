@@ -138,13 +138,19 @@ public class GoogleResponsivenessPOC {
 
     @Test
     public void RSP_ACC_001() throws Throwable {
-String sRootURL = "https://www.racingpost.com";
+String sRootURL = "https://test1.racingpost.com";
+String boundryURL = "test1.racingpost";
 
         EnhancedAssertion.hardAssertCondition(
                 WebNavUtils.validateSiteLoadWithinMaxLimit(ExampleProjectWebRunner.driver, sRootURL, 10),
                 "URL:" +sRootURL+ "- Expected load time less than 10s");
 
-        ExampleProjectNav.AcessibilityAuditAllLinksOnCurrentPage(ExampleProjectWebRunner.driver, sRootURL);
+        if(ExampleProjectWebRunner.driver.findElementById("truste-consent-button").isDisplayed()){
+            ExampleProjectWebRunner.driver.findElementById("truste-consent-button").click();
+        }
+
+
+        ExampleProjectNav.AcessibilityAuditAllLinksOnCurrentPage(ExampleProjectWebRunner.driver, sRootURL, boundryURL);
 
 //                        AccessibilityScanner scanner = new AccessibilityScanner(ExampleProjectWebRunner.driver);
 //                        Map<String, Object> accessibilityReport = scanner.runAccessibilityAudit();

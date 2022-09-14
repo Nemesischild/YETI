@@ -1,6 +1,6 @@
 package com.runner.accessibility;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ class JsFactory {
 
     private static JsFactory INSTANCE = null;
     private String accessibility_content = null;
-    private Logger log = Logger.getLogger(JsFactory.class);
+    private Logger log = LogManager.getLogger(JsFactory.class);
 
     private String jquery_content = null;
 

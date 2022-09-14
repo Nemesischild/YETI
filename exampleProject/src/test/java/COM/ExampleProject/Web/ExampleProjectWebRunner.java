@@ -55,11 +55,9 @@ public class ExampleProjectWebRunner implements EnhancedTestInterface {
      * When the above requirements are met we can now declare our class. Keeping in mind it HAS to
      * implement the EnchancedTestInterface or our runner won't be able to bind to anything.
      */
-    private static String OS = System.getProperty("os.name", "unknown").toLowerCase(Locale.ROOT);
 
-
-    public static String rootLocation = "src/main/resources/chromedriver.exe";
-    //public static String rootLocation = "src/main/resources/chromedriver";
+//    public static String rootLocation = "src/main/resources/chromedriver.exe";
+    public static String rootLocation = "src/main/resources/chromedriver";
     public static ChromeDriver driver;
 
     /**

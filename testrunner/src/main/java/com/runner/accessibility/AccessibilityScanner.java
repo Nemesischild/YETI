@@ -1,6 +1,6 @@
 package com.runner.accessibility;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -11,7 +11,7 @@ public class AccessibilityScanner {
 
 	private RemoteWebDriver driver;
 	private JavascriptExecutor js;
-	private Logger log = Logger.getLogger(AccessibilityScanner.class);
+	private Logger log = LogManager.getLogger(AccessibilityScanner.class);
 	private JsFactory jsFactory;
 
 	public AccessibilityScanner(RemoteWebDriver driver) throws IOException {

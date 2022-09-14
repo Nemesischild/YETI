@@ -82,7 +82,7 @@ public class ExampleProjectNav {
     }
 
 
-    public static void AcessibilityAuditAllLinksOnCurrentPage(RemoteWebDriver driver, String sRootURL) throws Throwable {
+    public static void AcessibilityAuditAllLinksOnCurrentPage(RemoteWebDriver driver, String sRootURL, String sBoundryURL) throws Throwable {
         List<WebElement> elements;
         List<String> clickedLinks = new ArrayList<>();
 
@@ -96,7 +96,7 @@ public class ExampleProjectNav {
 
         //      Loop through the grabbed list
         for (int i = 0; i < sizeOfAllLinks; i++) {
-            // record what URL is being clicked
+            // record what URL is being opened
             sURL = elements.get(i).getAttribute("href");
             // Check if Link has already been clicked
             for (String thisURL : clickedLinks) {
@@ -112,7 +112,7 @@ public class ExampleProjectNav {
                 // try to click the current link
                 try {
                     //ignore mailto Links
-                    if (sURL.contains("racingpost.com") && !sURL.contains("mailto:") && !sURL.contains("tel:")) {
+                    if (sURL.contains(sBoundryURL) && !sURL.contains("mailto:") && !sURL.contains("tel:")) {
                         EnhancedLogging.debug("Element index: "+ i +" - Attempting to open: " + sURL);
 
 
@@ -131,7 +131,9 @@ public class ExampleProjectNav {
                         errors = ((List<Result>) accessibilityReport.get("error"));
                         warnings = ((List<Result>) accessibilityReport.get("warning"));
                         String elementList = "";
-
+                        if(errors.isEmpty() && warnings.isEmpty()){
+                            EnhancedAssertion.softAssertCondition(true, "<p><strong>"+sURL + "</strong></p>\nNo Accessibility errors or warnings");
+                        }
                         for (Result error : errors) {
                             for (String element : error.getElements()) { //violated elements
                                 elementList = elementList + "<li style=\"text-align: left\" >" + element + "</li>\n";
