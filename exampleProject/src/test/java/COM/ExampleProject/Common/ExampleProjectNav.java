@@ -2,6 +2,7 @@ package COM.ExampleProject.Common;
 
 import COM.ExampleProject.Android.ExampleAndroidRunner;
 import COM.ExampleProject.Web.ExampleProjectWebRunner;
+import com.automation.CommonNavUtils;
 import com.automation.WebNavUtils;
 import com.runner.accessibility.AccessibilityScanner;
 import com.runner.accessibility.Result;
@@ -82,6 +83,29 @@ public class ExampleProjectNav {
     }
 
 
+    public static ArrayList<String> getWebLinksForAudit(RemoteWebDriver driver, String sRootURL, String sBoundryURL) {
+        List<WebElement> elements;
+        ArrayList<String> clickableLinks = new ArrayList<>();
+        String sURL = "";
+        boolean ignoreLink = false;
+
+        // Find all a href links on the current page into a usable list
+        elements = driver.findElements(By.tagName("a"));
+        int sizeOfAllLinks = elements.size();
+
+        for (int i = 0; i < sizeOfAllLinks; i++) {
+            // record what URL is being opened
+            sURL = elements.get(i).getAttribute("href");
+            if (sURL.contains(sBoundryURL) && !sURL.contains("mailto:") && !sURL.contains("tel:")) {
+                clickableLinks.add(sURL);
+            } else {
+                System.out.println("IGNORING LINK: " + sURL + " not in scope");
+            }
+        }
+
+        return CommonNavUtils.removeDuplicates(clickableLinks);
+    }
+
     public static void AcessibilityAuditAllLinksOnCurrentPage(RemoteWebDriver driver, String sRootURL, String sBoundryURL) throws Throwable {
         List<WebElement> elements;
         List<String> clickedLinks = new ArrayList<>();
@@ -106,17 +130,16 @@ public class ExampleProjectNav {
                     break;
                 }
             }
-                     // Check Ignore flag
+            // Check Ignore flag
             if (!ignoreLink) {
 
                 // try to click the current link
                 try {
                     //ignore mailto Links
                     if (sURL.contains(sBoundryURL) && !sURL.contains("mailto:") && !sURL.contains("tel:")) {
-                        EnhancedLogging.debug("Element index: "+ i +" - Attempting to open: " + sURL);
+                        EnhancedLogging.debug("Element index: " + i + " - Attempting to open: " + sURL);
 
-
-                            ExampleProjectWebRunner.driver.navigate().to(sURL);
+                        ExampleProjectWebRunner.driver.navigate().to(sURL);
 
                         // Add link URL to clicked list
                         clickedLinks.add(sURL);
@@ -151,14 +174,13 @@ public class ExampleProjectNav {
 
                         }
 
-
                     } else {
-                        System.out.println("Element index: "+ i +" - IGNORING: " + sURL + " not in scope");
+                        System.out.println("Element index: " + i + " - IGNORING: " + sURL + " not in scope");
                     }
                 } catch (Exception e) {
                     //ignore hidden element exceptions
                     if (!e.getMessage().contains("element not visible")) {
-                        System.out.println("Element index: "+ i +" - Did not open URL:  " + sURL + "\n Recieved :" + e.getMessage() + "\n");
+                        System.out.println("Element index: " + i + " - Did not open URL:  " + sURL + "\n Recieved :" + e.getMessage() + "\n");
                     } else {
                         // report the error
                         System.out.println("Element index: " + i + " " + sURL + " - is not a visible element that can be clicked");
@@ -184,8 +206,8 @@ public class ExampleProjectNav {
             elements = driver.findElements(By.tagName("a"));
             //System.out.println(sizeOfAllLinks);
             int newElementSize = elements.size();
-            if (newElementSize != sizeOfAllLinks){
-                EnhancedLogging.logOutput("Old element list count = " + sizeOfAllLinks + ": New element Count  = " + newElementSize );
+            if (newElementSize != sizeOfAllLinks) {
+                EnhancedLogging.logOutput("Old element list count = " + sizeOfAllLinks + ": New element Count  = " + newElementSize);
                 sizeOfAllLinks = newElementSize;
             }
 

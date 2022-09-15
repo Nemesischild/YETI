@@ -34,7 +34,6 @@ import java.net.MalformedURLException;
 @Setup(
         application = "RP Accessibility audit POC",
         reportType = {
-                Setup.ReportType.EXCEL,
                 Setup.ReportType.EXTENT_REPORT
         },
         version = "1",

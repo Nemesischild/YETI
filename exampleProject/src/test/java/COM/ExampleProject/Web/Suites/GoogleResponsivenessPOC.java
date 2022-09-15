@@ -11,6 +11,7 @@ import com.runner.annotations.TestInformation;
 import com.runner.runner.EnhancedAssertion;
 
 import com.runner.runner.EnhancedLogging;
+import cucumber.runtime.io.Helpers;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -119,7 +120,7 @@ public class GoogleResponsivenessPOC {
 
     @TestInformation(
 
-            testName = "Site Accessibility Audit - single page",
+            testName = "Site Accessibility Audit - Multi page",
             testDescription = "<TEST OBJECTIVE JIRA/ADAPTAVIST>" +
                     "As a ... " +
                     "I want ..." +
@@ -138,46 +139,63 @@ public class GoogleResponsivenessPOC {
 
     @Test
     public void RSP_ACC_001() throws Throwable {
-String sRootURL = "https://test1.racingpost.com";
-String boundryURL = "test1.racingpost";
+        String sRootURL = "https://test1.racingpost.com";
+        String boundryURL = "test1.racingpost.com";
+        ArrayList<String> usableLinks = new ArrayList<>();
+        Integer i =1;
 
         EnhancedAssertion.hardAssertCondition(
-                WebNavUtils.validateSiteLoadWithinMaxLimit(ExampleProjectWebRunner.driver, sRootURL, 10),
-                "URL:" +sRootURL+ "- Expected load time less than 10s");
+                WebNavUtils.validateSiteLoadWithinMaxLimit(ExampleProjectWebRunner.driver, sRootURL, 25),
+                "URL:" + sRootURL + "- Expected load time less than 25s");
 
-        if(ExampleProjectWebRunner.driver.findElementById("truste-consent-button").isDisplayed()){
+        usableLinks = ExampleProjectNav.getWebLinksForAudit(ExampleProjectWebRunner.driver, sRootURL, boundryURL);
+
+        if (ExampleProjectWebRunner.driver.findElementById("truste-consent-button").isDisplayed()) {
             ExampleProjectWebRunner.driver.findElementById("truste-consent-button").click();
         }
 
 
-        ExampleProjectNav.AcessibilityAuditAllLinksOnCurrentPage(ExampleProjectWebRunner.driver, sRootURL, boundryURL);
+        for (String link : usableLinks) {
+        //Navigate to the given URl but handle and report any errors
+            try{
+                ExampleProjectWebRunner.driver.navigate().to(link);
+            }catch (Exception e) {
+               EnhancedAssertion.addlogInfo(true,link + "\n<font color='black'>" + e + "</font>", false, true );
+            }
+            WebNavUtils.pageLoadPolling(1000);
 
-//                        AccessibilityScanner scanner = new AccessibilityScanner(ExampleProjectWebRunner.driver);
-//                        Map<String, Object> accessibilityReport = scanner.runAccessibilityAudit();
-//
-//                        List<Result> errors = new ArrayList<Result>();
-//                        List<Result> warnings = new ArrayList<Result>();
-//                        errors = ((List<Result>) accessibilityReport.get("error"));
-//                        warnings = ((List<Result>) accessibilityReport.get("warning"));
-//                        String elementList = "";
-//                        for (Result error : errors) {
-//                            for (String element : error.getElements()) { //violated elements
-//                                elementList = elementList + "<li style=\"text-align: left\" >" + element + "</li>\n";
-//                            }
-//                            EnhancedAssertion.softAssertCondition(false, "ERROR: Rule:" + error.getRule() + "\nURL: " + error.getUrl() + "\n ELEMENT <font color='black'> <ol type=\"1\">" + elementList + "</ol></font>");//e.g. AX_TEXT_01
-//                            elementList = "";
-//                        }
-//                        for (Result warning : warnings) {
-//
-//                            for (String element : warning.getElements()) { //violated elements
-//                                elementList = elementList + "<li style=\"text-align: left\" type=\"I\">" + element + "</li>\n";
-//
-//                            }
-//                            EnhancedAssertion.softAssertCondition(false, "WARNING: Rule:" + warning.getRule() + "\nURL: " + warning.getUrl() + "\n ELEMENT <font color='black'> <ol type=\"1\">" + elementList + "</ol></font>");//e.g. AX_TEXT_01
-//                            elementList = "";
-//                        }
-//
-//
-//
-       }
+            System.out.println("SCANNING Link "+ i + "/" + usableLinks.size() + ":"  + link);
+            AccessibilityScanner scanner = new AccessibilityScanner(ExampleProjectWebRunner.driver);
+            Map<String, Object> accessibilityReport = scanner.runAccessibilityAudit();
+
+            List<Result> errors = new ArrayList<Result>();
+            List<Result> warnings = new ArrayList<Result>();
+            errors = ((List<Result>) accessibilityReport.get("error"));
+            warnings = ((List<Result>) accessibilityReport.get("warning"));
+            String elementList = "";
+
+            if (errors.isEmpty() && warnings.isEmpty()){
+                EnhancedAssertion.softAssertCondition(true,  link + "\nNo Accessibility errors or warnings noted");//e.g. AX_TEXT_01
+            }
+
+            for (Result error : errors) {
+                for (String element : error.getElements()) { //violated elements
+                    elementList = elementList + "<li style=\"text-align: left\" >" + element + "</li>\n";
+                }
+                EnhancedAssertion.softAssertCondition(false, link + "\nERROR: Rule:" + error.getRule() + "\nURL: " + error.getUrl() + "\n ELEMENT \n<font color='black'> <ol type=\"1\">" + elementList + "</ol></font>");//e.g. AX_TEXT_01
+                elementList = "";
+            }
+            for (Result warning : warnings) {
+
+                for (String element : warning.getElements()) { //violated elements
+                    elementList = elementList + "<li style=\"text-align: left\" type=\"I\">" + element + "</li>\n";
+
+                }
+                EnhancedAssertion.softAssertCondition(false,  link + "\nWARNING: Rule:" + warning.getRule() + "\nURL: " + warning.getUrl() + "\n ELEMENT \n<font color='black'> <ol type=\"1\">" + elementList + "</ol></font>");//e.g. AX_TEXT_01
+                elementList = "";
+            }
+            i++;
+        }
     }
+}
+
