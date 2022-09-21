@@ -10,13 +10,14 @@ import com.runner.annotations.SuiteInformation;
 import com.runner.annotations.TestInformation;
 import com.runner.runner.EnhancedAssertion;
 
-import com.runner.runner.EnhancedLogging;
-import cucumber.runtime.io.Helpers;
+import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import java.util.Map;
         }
 )
 
-public class GoogleResponsivenessPOC {
+public class AccessibilityTest1 {
 
 //    @TestInformation(
 //
@@ -139,10 +140,10 @@ public class GoogleResponsivenessPOC {
 
     @Test
     public void RSP_ACC_001() throws Throwable {
-        String sRootURL = "https://test1.racingpost.com";
-        String boundryURL = "test1.racingpost.com";
+        String sRootURL = "https://test1.racingpost.com/news/";
+        String boundryURL = "test1.racingpost.com/news";
         ArrayList<String> usableLinks = new ArrayList<>();
-        Integer i =1;
+        Integer i = 1;
 
         EnhancedAssertion.hardAssertCondition(
                 WebNavUtils.validateSiteLoadWithinMaxLimit(ExampleProjectWebRunner.driver, sRootURL, 25),
@@ -154,47 +155,65 @@ public class GoogleResponsivenessPOC {
             ExampleProjectWebRunner.driver.findElementById("truste-consent-button").click();
         }
 
+        File directory = new File("src/main/resources/reports/audit/images");
+        if (directory.exists()) {
+            FileUtils.cleanDirectory(directory);
+        } else {
+            FileUtils.forceMkdir(directory);
+        }
 
         for (String link : usableLinks) {
-        //Navigate to the given URl but handle and report any errors
-            try{
+            //Navigate to the given URl but handle and report any errors
+            try {
                 ExampleProjectWebRunner.driver.navigate().to(link);
-            }catch (Exception e) {
-               EnhancedAssertion.addlogInfo(true,link + "\n<font color='black'>" + e + "</font>", false, true );
+            } catch (Exception e) {
+                EnhancedAssertion.addlogInfo(true, link + "\n<font color='black'>" + e + "</font>", false, true);
             }
             WebNavUtils.pageLoadPolling(1000);
 
-            System.out.println("SCANNING Link "+ i + "/" + usableLinks.size() + ":"  + link);
+            System.out.println("SCANNING Link " + i + "/" + usableLinks.size() + ":" + link);
             AccessibilityScanner scanner = new AccessibilityScanner(ExampleProjectWebRunner.driver);
             Map<String, Object> accessibilityReport = scanner.runAccessibilityAudit();
 
             List<Result> errors = new ArrayList<Result>();
             List<Result> warnings = new ArrayList<Result>();
-            errors = ((List<Result>) accessibilityReport.get("error"));
+//            byte[] screenshot;
+//            screenshot = accessibilityReport.get("screenshot")
+//            errors = ((List<Result>) accessibilityReport.get("error"));
             warnings = ((List<Result>) accessibilityReport.get("warning"));
             String elementList = "";
 
-            if (errors.isEmpty() && warnings.isEmpty()){
-                EnhancedAssertion.softAssertCondition(true,  link + "\nNo Accessibility errors or warnings noted");//e.g. AX_TEXT_01
-            }
+            if (errors.isEmpty() && warnings.isEmpty()) {
+                EnhancedAssertion.softAssertCondition(true, link + "\nNo Accessibility errors or warnings noted");//e.g. AX_TEXT_01
+            } else {
+                byte[] reportScreenShot = ((byte[]) accessibilityReport.get("screenshot"));
+                ByteArrayInputStream inStreamj = new ByteArrayInputStream(reportScreenShot);
+                BufferedImage newImage = ImageIO.read(inStreamj);
+                try {
 
-            for (Result error : errors) {
-                for (String element : error.getElements()) { //violated elements
-                    elementList = elementList + "<li style=\"text-align: left\" >" + element + "</li>\n";
+                    ImageIO.write(newImage, "png", new File(directory.getPath() + File.separator + "URL.Ref" + i + ".png"));
+                } catch (IOException e) {
+                    System.out.println(e);
                 }
-                EnhancedAssertion.softAssertCondition(false, link + "\nERROR: Rule:" + error.getRule() + "\nURL: " + error.getUrl() + "\n ELEMENT \n<font color='black'> <ol type=\"1\">" + elementList + "</ol></font>");//e.g. AX_TEXT_01
-                elementList = "";
-            }
-            for (Result warning : warnings) {
 
-                for (String element : warning.getElements()) { //violated elements
-                    elementList = elementList + "<li style=\"text-align: left\" type=\"I\">" + element + "</li>\n";
-
+                for (Result error : errors) {
+                    for (String element : error.getElements()) { //violated elements
+                        elementList = elementList + "<li style=\"text-align: left\" >" + element + "</li>\n";
+                    }
+                    EnhancedAssertion.softAssertCondition(false, "URL Ref " + i + ":" + link + "\nERROR: Rule:" + error.getRule() + "\nURL: " + error.getUrl() + "\n ELEMENT \n<font color='black'> <ol type=\"1\">" + elementList + "</ol></font>\n");//e.g. AX_TEXT_01
+                    elementList = "";
                 }
-                EnhancedAssertion.softAssertCondition(false,  link + "\nWARNING: Rule:" + warning.getRule() + "\nURL: " + warning.getUrl() + "\n ELEMENT \n<font color='black'> <ol type=\"1\">" + elementList + "</ol></font>");//e.g. AX_TEXT_01
-                elementList = "";
+                for (Result warning : warnings) {
+
+                    for (String element : warning.getElements()) { //violated elements
+                        elementList = elementList + "<li style=\"text-align: left\" type=\"I\">" + element + "</li>\n";
+
+                    }
+                    EnhancedAssertion.softAssertCondition(false, "URL Ref " + i + ":" + link + "\nWARNING: Rule:" + warning.getRule() + "\nURL: " + warning.getUrl() + "\n ELEMENT \n<font color='black'> <ol type=\"1\">" + elementList + "</ol></font>");//e.g. AX_TEXT_01
+                    elementList = "";
+                }
+                i++;
             }
-            i++;
         }
     }
 }

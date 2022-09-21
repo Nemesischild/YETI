@@ -7,6 +7,8 @@ import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CommonNavUtils {
@@ -61,5 +63,19 @@ public class CommonNavUtils {
 
         // return the new list
         return newList;
+    }
+
+    public static boolean checkForAndCreateFolder(String dPath){
+      File directory = new File(dPath);
+
+      if(!directory.exists()){
+          directory.mkdir();
+      }
+        return directory.exists();
+    }
+
+    public static void prepareFilePath(String path, String reportName) {
+        EnhancedLogging.debug("Preparing new report");
+
     }
 }

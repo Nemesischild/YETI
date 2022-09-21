@@ -1,7 +1,7 @@
 package COM.ExampleProject.Web;
 
 //import COM.ExampleProject.Web.Suites.ExampleSiteLaunchTest;
-import COM.ExampleProject.Web.Suites.GoogleResponsivenessPOC;
+import COM.ExampleProject.Web.Suites.AccessibilityTest1;
 import com.runner.annotations.Setup;
 import com.runner.runner.EnhancedSuite;
 import org.junit.runner.RunWith;
@@ -10,11 +10,10 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 @RunWith(EnhancedSuite.class)
 @Suite.SuiteClasses({
-        GoogleResponsivenessPOC.class,
+        AccessibilityTest1.class,
 })
 @Setup(
         application = "RP web Accessibility POC Audit",

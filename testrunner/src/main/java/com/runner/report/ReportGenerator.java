@@ -35,7 +35,7 @@ public class ReportGenerator extends Thread {
 
     private static Setup setup;
 
-    private static String path = "";
+    private static String path = "src/main/resources/reports";
     private static File outputFile;
     private static boolean isDebug = java.lang.management.ManagementFactory.getRuntimeMXBean().
             getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;

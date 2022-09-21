@@ -1,18 +1,16 @@
 package COM.ExampleProject.Web;
 
 
-import COM.ExampleProject.Web.Suites.GoogleResponsivenessPOC;
+import COM.ExampleProject.Web.Suites.AccessibilityTest1;
 import com.runner.annotations.Setup;
 import com.runner.interfaces.EnhancedTestInterface;
 import com.runner.runner.EnhancedSuite;
-import com.automation.RunnerUtils;
 import org.junit.runner.RunWith;
-import org.junit.runner.Runner;
 import org.junit.runners.Suite;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LoggingPreferences;
-import java.util.Locale;
+
 import java.net.MalformedURLException;
 
 
@@ -23,7 +21,7 @@ import java.net.MalformedURLException;
  */
 
 @Suite.SuiteClasses({
-       GoogleResponsivenessPOC.class,
+       AccessibilityTest1.class,
  })
 
 /**
