@@ -64,7 +64,7 @@ public class ExcelReport {
         headerStyle.setBorderTop(BorderStyle.THIN);
         headerFont.setColor(IndexedColors.BLACK.getIndex());
         headerFont.setBold(false);
-        headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        //headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
         headerStyle.setFont(headerFont);
 
         // Table Header Style
@@ -78,7 +78,7 @@ public class ExcelReport {
         tableHeaderStyle.setBorderTop(BorderStyle.THIN);
         tableHeaderFont.setColor(IndexedColors.BLACK.getIndex());
         tableHeaderFont.setBold(true);
-        tableHeaderStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        //tableHeaderStyle.setFillPattern(CellStyle.);
         tableHeaderStyle.setFont(tableHeaderFont);
 
 
@@ -390,7 +390,7 @@ public class ExcelReport {
 
         Cell passedNumber = passedSummary.createCell(1);
         passedNumber.setCellStyle(headerStyle);
-        passedNumber.setCellType(XSSFCell.CELL_TYPE_FORMULA);
+       // passedNumber.setCellType(XSSFCell.CELL_TYPE_FORMULA);
         passedNumber.setCellFormula("SUM(C14:C100)");
 
         Cell passedPercentage = passedSummary.createCell(2);
@@ -408,7 +408,7 @@ public class ExcelReport {
 
         Cell failedNumber = failedSummary.createCell(1);
         failedNumber.setCellStyle(headerStyle);
-        failedNumber.setCellType(XSSFCell.CELL_TYPE_FORMULA);
+        //failedNumber.setCellType(XSSFCell.CELL_TYPE_FORMULA);
         failedNumber.setCellFormula("SUM(D14:D100)");
 
         Cell failedPercentage = failedSummary.createCell(2);
@@ -426,7 +426,7 @@ public class ExcelReport {
 
         Cell naNumber = naSummary.createCell(1);
         naNumber.setCellStyle(headerStyle);
-        naNumber.setCellType(XSSFCell.CELL_TYPE_FORMULA);
+        //naNumber.setCell(XSSFCell.CELL_TYPE_FORMULA);
         naNumber.setCellFormula("SUM(E14:E100)");
 
         Cell naPercentage = naSummary.createCell(2);
@@ -444,7 +444,7 @@ public class ExcelReport {
 
         Cell totalNumber = totalSummary.createCell(1);
         totalNumber.setCellStyle(headerStyle);
-        totalNumber.setCellType(XSSFCell.CELL_TYPE_FORMULA);
+      //  totalNumber.setCellType(XSSFCell.CELL_TYPE_FORMULA);
         totalNumber.setCellFormula("SUM(F14:F100)");
 
         Cell totalPercentage = totalSummary.createCell(2);
